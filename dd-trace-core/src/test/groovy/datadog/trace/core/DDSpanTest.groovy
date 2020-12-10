@@ -18,6 +18,10 @@ class DDSpanTest extends DDSpecification {
   def sampler = new RateByServiceSampler()
   def tracer = CoreTracer.builder().writer(writer).sampler(sampler).build()
 
+  def cleanup() {
+    tracer?.close()
+  }
+  
   def "getters and setters"() {
     setup:
     final DDSpanContext context =
@@ -274,11 +278,11 @@ class DDSpanTest extends DDSpecification {
 
     where:
     parentServiceName                     | expectTopLevel
-    "foo"                                 |  true
-    UTF8BytesString.create("foo")         |  true
-    "fakeService"                         |  false
-    UTF8BytesString.create("fakeService") |  false
-    ""                                    |  true
-    null                                  |  true
+    "foo"                                 | true
+    UTF8BytesString.create("foo")         | true
+    "fakeService"                         | false
+    UTF8BytesString.create("fakeService") | false
+    ""                                    | true
+    null                                  | true
   }
 }
