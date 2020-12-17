@@ -52,6 +52,7 @@ public final class PreparedStatementInstrumentation extends Instrumenter.Tracing
   @Override
   public ElementMatcher<TypeDescription> typeMatcher() {
     return implementsInterface(named("java.sql.PreparedStatement"))
+        .and(not(named("org.datanucleus.store.rdbms.ParamLoggingPreparedStatement")))
         .and(not(extendsClass(named("com.zaxxer.hikari.proxy.StatementProxy"))))
         .and(not(implementsInterface(named("com.mchange.v2.c3p0.C3P0ProxyStatement"))))
         .and(not(named("scalikejdbc.DBConnectionAttributesWiredPreparedStatement")));
